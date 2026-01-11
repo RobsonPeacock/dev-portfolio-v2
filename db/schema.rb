@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_10_014857) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_11_131316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_10_014857) do
     t.string "name"
     t.string "profile_image_url"
     t.string "tagline"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "educations", force: :cascade do |t|
+    t.string "certification_url"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.date "end_date"
+    t.string "field_of_study"
+    t.string "institution"
+    t.date "start_date"
+    t.string "title"
     t.datetime "updated_at", null: false
   end
 
