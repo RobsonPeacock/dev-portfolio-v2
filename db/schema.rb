@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_10_013355) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_10_014857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -172,6 +172,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_10_013355) do
     t.index ["expires_at"], name: "index_solid_queue_semaphores_on_expires_at"
     t.index ["key", "value"], name: "index_solid_queue_semaphores_on_key_and_value"
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
+  end
+
+  create_table "work_experiences", force: :cascade do |t|
+    t.string "company"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.date "end_date"
+    t.string "role"
+    t.date "start_date"
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
