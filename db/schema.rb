@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_11_131316) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_12_131654) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_11_131316) do
   end
 
   create_table "educations", force: :cascade do |t|
+    t.bigint "about_id", null: false
     t.string "certification_url"
     t.datetime "created_at", null: false
     t.text "description"
@@ -34,14 +35,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_11_131316) do
     t.date "start_date"
     t.string "title"
     t.datetime "updated_at", null: false
+    t.index ["about_id"], name: "index_educations_on_about_id"
   end
 
   create_table "projects", force: :cascade do |t|
+    t.bigint "about_id", null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.string "status"
     t.string "title"
     t.datetime "updated_at", null: false
+    t.index ["about_id"], name: "index_projects_on_about_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -187,6 +191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_11_131316) do
   end
 
   create_table "work_experiences", force: :cascade do |t|
+    t.bigint "about_id", null: false
     t.string "company"
     t.datetime "created_at", null: false
     t.text "description"
@@ -194,12 +199,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_11_131316) do
     t.string "role"
     t.date "start_date"
     t.datetime "updated_at", null: false
+    t.index ["about_id"], name: "index_work_experiences_on_about_id"
   end
 
+  add_foreign_key "educations", "abouts"
+  add_foreign_key "projects", "abouts"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "work_experiences", "abouts"
 end
