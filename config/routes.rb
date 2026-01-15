@@ -5,4 +5,5 @@ Rails.application.routes.draw do
 
   resources :about, only: [:index, :update]
   resources :projects
+  resources :work_experiences
 end
