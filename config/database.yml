@@ -92,3 +92,9 @@ production:
     database: dev_portfolio_v2_production
     username: dev_portfolio_v2
     password: <%= ENV["DEV_PORTFOLIO_V2_DATABASE_PASSWORD"] %>
+  queue:
+    adapter: postgresql
+  cache:
+    adapter: postgresql
+  cable:
+    adapter: postgresql
