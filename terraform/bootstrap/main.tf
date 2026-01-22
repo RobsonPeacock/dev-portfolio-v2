@@ -110,3 +110,40 @@ resource "aws_s3_bucket_policy" "tf_state_bucket_policy" {
   bucket = aws_s3_bucket.tf_state_bucket.id
   policy = data.aws_iam_policy_document.tf_state_bucket_policy.json
 }
+
+data "aws_iam_policy_document" "github_actions_portfolio_trust" {
+  statement {
+    effect = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type = "Federated"
+      identifiers = ["arn:aws:iam::${local.account_id}:oidc-provider/token.actions.githubusercontent.com"]
+    }
+
+    condition {
+      test = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test = "StringEquals"
+      variable = "token.actions.githubusercontent.com:sub"
+      values = ["repo:RobsonPeacock/dev-portfolio-v2:ref:refs/heads/main"]
+    }
+  }
+}
+
+resource "aws_iam_role" "github_actions_portfolio_role" {
+  name = "github-actions-portfolio-role"
+  description        = "Role for GitHub Actions to deploy Terraform infrastructure."
+  assume_role_policy = data.aws_iam_policy_document.github_actions_portfolio_trust.json
+}
+
+resource "aws_iam_role_policy_attachment" "github_actions_attachments" {
+  for_each = toset(local.managed_policy_arns)
+
+  role = aws_iam_role.github_actions_portfolio_role.name
+  policy_arn = each.value
+}
