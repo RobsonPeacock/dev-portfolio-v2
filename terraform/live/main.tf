@@ -30,3 +30,46 @@ resource "aws_subnet" "main" {
     Tier = each.value.public ? "public" : "private"
   }
 }
+
+resource "aws_internet_gateway" "internet_gw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "main-portfolio-igw"
+  }
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.internet_gw.id
+  }
+
+  tags = {
+    Name = "portfolio-public-route-table"
+  }
+}
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "portfolio-private-route-table"
+  }
+}
+
+resource "aws_route_table_association" "public" {
+  for_each = tomap(local.public_subnets)
+
+  subnet_id = each.value
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "private" {
+  for_each = tomap(local.private_subnets)
+
+  subnet_id = each.value
+  route_table_id = aws_route_table.private.id
+}

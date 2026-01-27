@@ -15,4 +15,14 @@ locals {
       public = false
     }}
   )
+
+  public_subnets = { 
+    for key, subnet in aws_subnet.main : key => subnet.id
+    if subnet.tags.Tier == "public"
+  }
+
+  private_subnets = { 
+    for key, subnet in aws_subnet.main : key => subnet.id
+    if subnet.tags.Tier == "private"
+  }
 }
