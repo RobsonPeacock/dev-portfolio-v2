@@ -25,4 +25,9 @@ locals {
     for key, subnet in aws_subnet.main : key => subnet.id
     if subnet.tags.Tier == "private"
   }
+
+  service_ports = {
+    "80" = "HTTP",
+    "443" = "HTTPS"
+  }
 }
