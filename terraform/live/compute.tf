@@ -30,3 +30,14 @@ resource "aws_instance" "dev_portfolio_web_instance" {
     Name = "dev-portfolio-web-instance"
   }
 }
+
+resource "aws_instance" "dev_portfolio_db_instance" {
+  ami = data.aws_ami.ubuntu_ami.id
+  instance_type = "t4g.small"
+  subnet_id = aws_subnet.main["private-${var.aws_region}a"].id
+  vpc_security_group_ids = [aws_security_group.database.id]
+
+  tags = {
+    Name = "dev-portfolio-db-instance"
+  }
+}
