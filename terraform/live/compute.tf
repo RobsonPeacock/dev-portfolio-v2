@@ -41,3 +41,9 @@ resource "aws_instance" "dev_portfolio_db_instance" {
     Name = "dev-portfolio-db-instance"
   }
 }
+
+resource "aws_ec2_instance_connect_endpoint" "backend_eic_endpoint" {
+  subnet_id = aws_subnet.main["private-${var.aws_region}a"].id
+  security_group_ids = [aws_security_group.ssh_access[count.index].id]
+  count = var.enable_ssh_access ? 1 : 0
+}

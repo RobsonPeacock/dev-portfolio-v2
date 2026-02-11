@@ -3,3 +3,8 @@ variable "aws_region" {
   type        = string
   default     = "eu-west-1"
 }
+
+variable "enable_ssh_access" {
+  type = bool
+  default = false
+}
