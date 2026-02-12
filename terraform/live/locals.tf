@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 locals {
   selected_azs = slice(data.aws_availability_zones.available.names, 0, 2)
 
@@ -30,4 +32,6 @@ locals {
     "80" = "HTTP",
     "443" = "HTTPS"
   }
+
+  account_id = data.aws_caller_identity.current.account_id
 }

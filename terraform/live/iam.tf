@@ -32,3 +32,27 @@ resource "aws_iam_instance_profile" "ec2_app_profile" {
     Project = "dev-portfolio"
   }
 }
+
+resource "aws_iam_policy" "ssm_policy" {
+  name = "ssm-access-policy"
+  description = "Provides access to SSM parameters"
+  policy = data.aws_iam_policy_document.ssm_policy_document.json
+}
+
+data "aws_iam_policy_document" "ssm_policy_document" {
+  statement {
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParametersByPath"
+    ]
+
+    resources = [
+      "arn:aws:ssm:${var.aws_region}:${local.account_id}:parameter/prod/backend"
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ssm_policy" {
+  role = aws_iam_role.app_role.name
+  policy_arn = aws_iam_policy.ssm_policy.arn
+}
