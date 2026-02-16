@@ -71,5 +71,11 @@ resource "aws_route_table_association" "private" {
   for_each = tomap(local.private_subnets)
 
   subnet_id = each.value
-  route_table_id = aws_route_table.private.id
+  route_table_id = var.enable_maint_mode ? aws_route_table.public.id : aws_route_table.private.id
+}
+
+resource "aws_eip" "db_maint_eip" {
+  instance = aws_instance.dev_portfolio_db_instance.id
+  domain   = "vpc"
+  count = var.enable_maint_mode ? 1 : 0
 }

@@ -33,5 +33,22 @@ locals {
     "443" = "HTTPS"
   }
 
+  db_maint_ports = {
+    "HTTP" = {
+      "port" = "80"
+      "protocol" = "TCP"
+    }
+
+    "HTTPS" = {
+      "port" = "443"
+      "protocol" = "TCP"
+    }
+
+    "DNS" = {
+      "port" = "53"
+      "protocol" = "UDP"
+    }
+  }
+
   account_id = data.aws_caller_identity.current.account_id
 }

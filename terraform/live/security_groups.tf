@@ -96,3 +96,13 @@ resource "aws_vpc_security_group_egress_rule" "db_ssh_egress_rule" {
   ip_protocol = "tcp"
   cidr_ipv4 = aws_subnet.main["private-${var.aws_region}a"].cidr_block
 }
+
+resource "aws_vpc_security_group_egress_rule" "db_maint_egress_rule" {
+  for_each = var.enable_maint_mode ? local.db_maint_ports : {}
+  security_group_id = aws_security_group.database.id
+
+  from_port = each.value.port
+  to_port = each.value.port
+  ip_protocol = each.value.protocol
+  cidr_ipv4 = "0.0.0.0/0"
+}

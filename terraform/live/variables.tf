@@ -8,3 +8,8 @@ variable "enable_ssh_access" {
   type = bool
   default = false
 }
+
+variable "enable_maint_mode" {
+  type = bool
+  default = false
+}
