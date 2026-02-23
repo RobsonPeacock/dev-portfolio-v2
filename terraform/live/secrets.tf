@@ -47,3 +47,13 @@ resource "aws_ssm_parameter" "pg_password" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "db_host" {
+  name = "/prod/backend/dev_portfolio_db_host"
+  type = "String"
+  value = "change_me"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
