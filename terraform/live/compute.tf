@@ -38,6 +38,11 @@ resource "aws_instance" "dev_portfolio_db_instance" {
   subnet_id = aws_subnet.main["private-${var.aws_region}a"].id
   vpc_security_group_ids = [aws_security_group.database.id]
 
+  user_data = templatefile("${path.module}/scripts/db_setup.sh", {
+                aws_region = var.aws_region
+                account_id = local.account_id
+              })
+
   tags = {
     Name = "dev-portfolio-db-instance"
   }
