@@ -26,6 +26,12 @@ resource "aws_instance" "dev_portfolio_web_instance" {
   subnet_id = aws_subnet.main["public-${var.aws_region}a"].id
   vpc_security_group_ids = [aws_security_group.web.id]
 
+  user_data = templatefile("${path.module}/scripts/web_setup.sh", {
+                aws_region = var.aws_region
+                account_id = local.account_id
+                ruby_version = local.ruby_version
+              })
+
   tags = {
     Name = "dev-portfolio-web-instance"
   }

@@ -51,4 +51,6 @@ locals {
   }
 
   account_id = data.aws_caller_identity.current.account_id
+
+  ruby_version = trimspace(file("${path.module}/../../.ruby-version"))
 }
