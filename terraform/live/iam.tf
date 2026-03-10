@@ -50,6 +50,16 @@ data "aws_iam_policy_document" "ssm_policy_document" {
       "arn:aws:ssm:${var.aws_region}:${local.account_id}:parameter/prod/backend"
     ]
   }
+
+  statement {
+    actions = [
+      "ssm:PutParameter"
+    ]
+
+    resources = [
+      "arn:aws:ssm:${var.aws_region}:${local.account_id}:parameter/prod/backend/*"
+    ]
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "attach_ssm_policy" {
