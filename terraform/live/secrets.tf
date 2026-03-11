@@ -57,3 +57,13 @@ resource "aws_ssm_parameter" "db_host" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "rails_master_key" {
+  name = "/prod/backend/dev_portfolio_rails_master_key"
+  type = "SecureString"
+  value = "change_me"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}

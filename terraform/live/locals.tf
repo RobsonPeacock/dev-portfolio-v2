@@ -53,4 +53,6 @@ locals {
   account_id = data.aws_caller_identity.current.account_id
 
   ecr_base_url = "${local.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com"
+
+  ruby_version = trimspace(file("${path.module}/../../.ruby-version"))
 }
