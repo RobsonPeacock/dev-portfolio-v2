@@ -54,5 +54,5 @@ locals {
 
   ecr_base_url = "${local.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com"
 
-  ruby_version = trimspace(file("${path.module}/../../.ruby-version"))
+  ruby_version = trimspace(file("${path.module}/../../backend/.ruby-version"))
 }
