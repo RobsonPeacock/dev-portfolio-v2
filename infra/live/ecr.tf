@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "portfolio-ecr-repo" {
-  name = "dev-portfolio-api"
+  name                 = "dev-portfolio-api"
   image_tag_mutability = "IMMUTABLE"
 
   image_scanning_configuration {

@@ -5,11 +5,11 @@ variable "aws_region" {
 }
 
 variable "enable_ssh_access" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "enable_maint_mode" {
-  type = bool
+  type    = bool
   default = false
 }

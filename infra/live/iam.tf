@@ -1,6 +1,6 @@
 resource "aws_iam_role" "app_role" {
-  name = "dev-portfolio-app-role"
-  description = <<-EOT
+  name               = "dev-portfolio-app-role"
+  description        = <<-EOT
     Allows EC2 instances to pull container images 
     from ECR and access required AWS services for the 
     application tier.
@@ -13,14 +13,14 @@ data "aws_iam_policy_document" "ec2_trust_policy" {
     actions = ["sts:AssumeRole"]
 
     principals {
-      type = "Service"
+      type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
   }
 }
 
 resource "aws_iam_role_policy_attachment" "attach_app_role_policy" {
-  role = aws_iam_role.app_role.name
+  role       = aws_iam_role.app_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
@@ -34,9 +34,9 @@ resource "aws_iam_instance_profile" "ec2_app_profile" {
 }
 
 resource "aws_iam_policy" "ssm_policy" {
-  name = "ssm-access-policy"
+  name        = "ssm-access-policy"
   description = "Provides access to SSM parameters"
-  policy = data.aws_iam_policy_document.ssm_policy_document.json
+  policy      = data.aws_iam_policy_document.ssm_policy_document.json
 }
 
 data "aws_iam_policy_document" "ssm_policy_document" {
@@ -63,6 +63,6 @@ data "aws_iam_policy_document" "ssm_policy_document" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_ssm_policy" {
-  role = aws_iam_role.app_role.name
+  role       = aws_iam_role.app_role.name
   policy_arn = aws_iam_policy.ssm_policy.arn
 }

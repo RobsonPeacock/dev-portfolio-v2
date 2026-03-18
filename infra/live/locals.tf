@@ -6,46 +6,46 @@ locals {
   subnet_config = merge(
 
     { for i, az in local.selected_azs : "public-${az}" => {
-        cidr = cidrsubnet(var.vpc_cidr, 8, i + 1)
-        az = az
-        public = true
-    }},
+      cidr   = cidrsubnet(var.vpc_cidr, 8, i + 1)
+      az     = az
+      public = true
+    } },
 
     { for i, az in local.selected_azs : "private-${az}" => {
-      cidr = cidrsubnet(var.vpc_cidr, 8, i + 10)
-      az = az
+      cidr   = cidrsubnet(var.vpc_cidr, 8, i + 10)
+      az     = az
       public = false
-    }}
+    } }
   )
 
-  public_subnets = { 
+  public_subnets = {
     for key, subnet in aws_subnet.main : key => subnet.id
     if subnet.tags.Tier == "public"
   }
 
-  private_subnets = { 
+  private_subnets = {
     for key, subnet in aws_subnet.main : key => subnet.id
     if subnet.tags.Tier == "private"
   }
 
   service_ports = {
-    "80" = "HTTP",
+    "80"  = "HTTP",
     "443" = "HTTPS"
   }
 
   db_maint_ports = {
     "HTTP" = {
-      "port" = "80"
+      "port"     = "80"
       "protocol" = "TCP"
     }
 
     "HTTPS" = {
-      "port" = "443"
+      "port"     = "443"
       "protocol" = "TCP"
     }
 
     "DNS" = {
-      "port" = "53"
+      "port"     = "53"
       "protocol" = "UDP"
     }
   }

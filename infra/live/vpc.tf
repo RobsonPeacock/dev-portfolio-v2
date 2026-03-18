@@ -1,6 +1,6 @@
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
-  enable_dns_support = true
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
@@ -9,7 +9,7 @@ resource "aws_vpc" "main" {
 }
 
 variable "vpc_cidr" {
-  type = string
+  type    = string
   default = "10.0.0.0/16"
 }
 
@@ -20,9 +20,9 @@ data "aws_availability_zones" "available" {
 resource "aws_subnet" "main" {
   for_each = local.subnet_config
 
-  vpc_id = aws_vpc.main.id
-  cidr_block = each.value.cidr
-  availability_zone = each.value.az
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = each.value.cidr
+  availability_zone       = each.value.az
   map_public_ip_on_launch = each.value.public
 
   tags = {
@@ -63,19 +63,19 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "public" {
   for_each = tomap(local.public_subnets)
 
-  subnet_id = each.value
+  subnet_id      = each.value
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private" {
   for_each = tomap(local.private_subnets)
 
-  subnet_id = each.value
+  subnet_id      = each.value
   route_table_id = var.enable_maint_mode ? aws_route_table.public.id : aws_route_table.private.id
 }
 
 resource "aws_eip" "db_maint_eip" {
   instance = aws_instance.dev_portfolio_db_instance.id
   domain   = "vpc"
-  count = var.enable_maint_mode ? 1 : 0
+  count    = var.enable_maint_mode ? 1 : 0
 }
