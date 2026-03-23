@@ -1,0 +1,78 @@
+name: Infra Deployment
+run-name: Performs checks and deployment with latest changes
+on: 
+  push:
+    branches: [ main ]
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  bootstrap:
+    name: Deploy Bootstrap Resources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt (Bootstrap)
+        run: terraform fmt -check
+        working-directory: ./infra/bootstrap
+
+      - name: Terraform Init (Bootstrap)
+        run: |
+          terraform init -input=false
+        working-directory: ./infra/bootstrap
+
+      - name: Terraform Validate (Bootstrap)
+        run: terraform validate -no-color
+        working-directory: ./infra/bootstrap
+
+      - name: Terraform Plan (Bootstrap)
+        run: terraform plan -no-color -input=false
+        working-directory: ./infra/bootstrap
+
+      - name: Terraform Apply (Bootstrap)
+        run: terraform apply -auto-approve -input=false
+        working-directory: ./infra/bootstrap
+  live:
+    name: Deploy Live Resources
+    needs: bootstrap
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt (Live)
+        run: terraform fmt -check
+        working-directory: ./infra/live
+
+      - name: Terraform Init (Live)
+        run: |
+          terraform init -input=false
+        working-directory: ./infra/live
+
+      - name: Terraform Validate (Live)
+        run: terraform validate -no-color
+        working-directory: ./infra/live
+
+      - name: Terraform Plan (Live)
+        run: terraform plan -no-color -input=false
+        working-directory: ./infra/live
+
+      - name: Terraform Apply (Live)
+        run: terraform apply -auto-approve -input=false
+        working-directory: ./infra/live
