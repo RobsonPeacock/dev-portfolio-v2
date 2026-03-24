@@ -1,0 +1,28 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "6b40f1539789756913e8f6361e72dabd4f660757b6c9abeb37077273c0afd6d2",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/work_experiences_controller.rb",
+      "line": 52,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:work_experience).permit(:company, :description, :end_date, :role, :start_date)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "WorkExperiencesController",
+        "method": "work_experiences_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "Role is not related to permissions"
+    }
+  ],
+  "brakeman_version": "7.1.2"
+}
