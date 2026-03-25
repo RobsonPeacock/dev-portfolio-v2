@@ -3,6 +3,8 @@ run-name: Performs checks and deployment with latest changes
 on: 
   push:
     branches: [ main ]
+    paths:
+    - 'infra/**'
 permissions:
   id-token: write
   contents: read
