@@ -1,7 +1,7 @@
 class Education < ApplicationRecord
   belongs_to :about
 
-  validates :description, :field_of_study, 
+  validates :description, :field_of_study,
             :institution, :start_date, :title, presence: true
   validates :end_date, presence: true, comparison: { greater_than: :start_date }
 

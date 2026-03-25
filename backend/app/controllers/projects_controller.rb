@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
-  before_action :set_about, only: [:index, :create]
-  before_action :set_project, only: [:update, :destroy]
+  before_action :set_about, only: [ :index, :create ]
+  before_action :set_project, only: [ :update, :destroy ]
 
   def index
     @projects = @about.projects

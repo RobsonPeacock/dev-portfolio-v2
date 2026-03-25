@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   root to: "application#index"
 
-  resources :about, only: [:index, :update]
+  resources :about, only: [ :index, :update ]
   resources :projects
   resources :work_experiences
   resources :educations

@@ -1,6 +1,6 @@
 class WorkExperiencesController < ApplicationController
-  before_action :set_about, only: [:index, :create]
-  before_action :set_work_experience, only: [:update, :destroy]
+  before_action :set_about, only: [ :index, :create ]
+  before_action :set_work_experience, only: [ :update, :destroy ]
 
   def index
     @work_experiences = @about.work_experiences
@@ -48,7 +48,7 @@ class WorkExperiencesController < ApplicationController
   end
 
   def work_experiences_params
-    params.require(:work_experience).permit(:company, :description, 
+    params.require(:work_experience).permit(:company, :description,
                                             :end_date, :role, :start_date)
   end
 end

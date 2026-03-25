@@ -1,6 +1,6 @@
 class EducationsController < ApplicationController
-  before_action :set_about, only: [:index, :create]
-  before_action :set_education, only: [:update, :destroy]
+  before_action :set_about, only: [ :index, :create ]
+  before_action :set_education, only: [ :update, :destroy ]
 
   def index
     @educations = @about.educations
@@ -40,7 +40,7 @@ class EducationsController < ApplicationController
   private
 
   def education_params
-    params.require(:education).permit(:certification_url, :description, :end_date, 
+    params.require(:education).permit(:certification_url, :description, :end_date,
                                       :field_of_study, :institution, :start_date, :title)
   end
 
