@@ -41,7 +41,14 @@ sudo ./aws/install
 
 aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${ecr_base_url}
 
-docker pull ${ecr_base_url}/dev-portfolio-api:latest
+echo "IMAGE_TAG=$(aws ecr describe-images \
+  --repository-name dev-portfolio-api \
+  --query 'sort_by(imageDetails, &imagePushedAt)[-1].imageTags[0]' \
+  --output text)" > /home/ubuntu/.env
+
+source /home/ubuntu/.env
+
+docker pull ${ecr_base_url}/dev-portfolio-api:$${IMAGE_TAG}
 
 docker system prune --all --force
 
@@ -57,7 +64,7 @@ PRIVATE_IP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.25
 cat <<EOF > /home/ubuntu/docker-compose.yml
   services:
     web:
-      image: ${ecr_base_url}/dev-portfolio-api:latest
+      image: ${ecr_base_url}/dev-portfolio-api:\$IMAGE_TAG
       ports:
         - $${PRIVATE_IP}:80:3000
       working_dir: /app
