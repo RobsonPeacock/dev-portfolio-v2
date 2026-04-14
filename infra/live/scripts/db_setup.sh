@@ -35,10 +35,6 @@ PRIVATE_IP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.25
 
 aws ssm put-parameter --name "/prod/backend/dev_portfolio_db_host" --value "$PRIVATE_IP" --overwrite --region ${aws_region}
 
-aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${ecr_base_url}
-
-docker pull "${ecr_base_url}/dev-portfolio-api:latest"
-
 docker system prune --all --force
 
 mkdir -p /home/ubuntu/db_data
