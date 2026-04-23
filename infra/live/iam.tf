@@ -20,8 +20,10 @@ data "aws_iam_policy_document" "ec2_trust_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_app_role_policy" {
+  for_each = toset(local.managed_policy_arns)
+
   role       = aws_iam_role.app_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  policy_arn = each.value
 }
 
 resource "aws_iam_instance_profile" "ec2_app_profile" {

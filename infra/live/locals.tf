@@ -55,4 +55,9 @@ locals {
   ecr_base_url = "${local.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com"
 
   ruby_version = trimspace(file("${path.module}/../../backend/.ruby-version"))
+
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  ]
 }
