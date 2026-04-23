@@ -1,0 +1,87 @@
+name: Backend deployment
+run-name: Performs checks and deployment with latest changes
+on: 
+  push:
+    branches: [ main ]
+    paths:
+    - 'backend/**'
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  app-deploy:
+    name: Deploy Backend App
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.8'
+          bundler-cache: true
+          working-directory: ./backend
+
+      - name: Run security scan (Brakeman)
+        run: |
+          gem install brakeman
+          brakeman --exit-on-warn --no-pager
+        working-directory: ./backend
+
+      - name: Rubocop checks
+        working-directory: ./backend
+        run: bundle exec rubocop
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_CI_ROLE_ARN }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: 'false'
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: dev-portfolio-api
+          IMAGE_TAG: ${{ github.sha }}
+        working-directory: ./backend
+        run: |
+          docker build --platform linux/arm64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Deploy via SSM
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+              --document-name "AWS-RunShellScript" \
+              --parameters 'commands=[
+                                      "cd /home/ubuntu && 
+                                      echo IMAGE_TAG=${{ github.sha }} > .env && 
+                                      docker compose pull &&
+                                      docker compose up -d &&
+                                      docker image prune -f"
+                                      ]' \
+              --targets 'Key=tag:Name,Values=dev-portfolio-web-instance' \
+              --comment "Deploy Code Changes" \
+              --query "Command.CommandId" \
+              --output text)
+
+          echo "Sent command $COMMAND_ID to instances tagged Name=dev-portfolio-web-instance"
+
+          echo "Waiting for deployment to complete..."
+          sleep 10
+
+          ID=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=dev-portfolio-web-instance" \
+                        "Name=instance-state-name,Values=running" \
+              --query "Reservations[].Instances[0].InstanceId" \
+              --output text)
+
+          aws ssm wait command-executed \
+          --command-id "$COMMAND_ID" \
+          --instance-id "$ID"
+
+          echo "Deployment successful!"
