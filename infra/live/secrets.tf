@@ -67,3 +67,13 @@ resource "aws_ssm_parameter" "rails_master_key" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "allowed_origin" {
+  name = "/prod/backend/allowed_origin"
+  type  = "SecureString"
+  value = "change_me"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}

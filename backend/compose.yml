@@ -11,6 +11,7 @@ services:
     depends_on:
       - db
     environment:
+      ALLOWED_ORIGIN: ${ALLOWED_ORIGIN}
       RAILS_ENV: ${RAILS_ENV}
       APP_USER: ${DB_USERNAME}
       APP_USER_PASSWORD: ${DB_PASSWORD}
