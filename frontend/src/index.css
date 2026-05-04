@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+html { scroll-behavior: smooth; }
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -54,6 +56,7 @@
 
 body {
   margin: 0;
+  @apply bg-[#0B0F14] text-gray-100;
 }
 
 #root {
