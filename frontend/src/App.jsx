@@ -1,5 +1,6 @@
 import './index.css';
 import Header from '../components/header.jsx';
+import HeroSection from '../components/hero_section.jsx';
 
 function App() {
 
@@ -7,6 +8,9 @@ function App() {
     <>
       <div className="min-h-screen bg-[#0B0F14] text-gray-100 font-mono relative overflow-hidden">
         <Header />
+        <main>
+          <HeroSection />
+        </main>
       </div>
     </>
   )
