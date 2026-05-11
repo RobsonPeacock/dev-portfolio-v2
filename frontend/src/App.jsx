@@ -4,6 +4,7 @@ import HeroSection from '../components/hero_section.jsx';
 import SkillsSection from '../components/skills_section.jsx';
 import GithubCalendar from '../components/github_calendar.jsx';
 import WorkExperienceSection from '../components/work_experience_section.jsx';
+import ProjectSection from '../components/project_section.jsx';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <SkillsSection />
           <GithubCalendar />
           <WorkExperienceSection />
+          <ProjectSection />
         </main>
       </div>
     </>
