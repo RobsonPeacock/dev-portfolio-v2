@@ -2,6 +2,7 @@ import './index.css';
 import Header from '../components/header.jsx';
 import HeroSection from '../components/hero_section.jsx';
 import SkillsSection from '../components/skills_section.jsx';
+import GithubCalendar from '../components/github_calendar.jsx';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <main>
           <HeroSection />
           <SkillsSection />
+          <GithubCalendar />
         </main>
       </div>
     </>
