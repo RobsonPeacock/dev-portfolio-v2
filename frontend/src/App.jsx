@@ -1,6 +1,7 @@
 import './index.css';
 import Header from '../components/header.jsx';
 import HeroSection from '../components/hero_section.jsx';
+import SkillsSection from '../components/skills_section.jsx';
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
         <Header />
         <main>
           <HeroSection />
+          <SkillsSection />
         </main>
       </div>
     </>
