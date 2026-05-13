@@ -2,6 +2,7 @@ import './index.css';
 import Header from '../components/header.jsx';
 import HeroSection from '../components/hero_section.jsx';
 import SkillsSection from '../components/skills_section.jsx';
+import CloudInfrastructureSection from '../components/cloud_infrastructure_section.jsx';
 import GithubCalendar from '../components/github_calendar.jsx';
 import WorkExperienceSection from '../components/work_experience_section.jsx';
 import ProjectSection from '../components/project_section.jsx';
@@ -16,6 +17,7 @@ function App() {
         <main>
           <HeroSection />
           <SkillsSection />
+          <CloudInfrastructureSection />
           <GithubCalendar />
           <WorkExperienceSection />
           <ProjectSection />
