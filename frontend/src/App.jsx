@@ -8,6 +8,7 @@ import WorkExperienceSection from '../components/work_experience_section.jsx';
 import ProjectSection from '../components/project_section.jsx';
 import EducationSection from '../components/education_section.jsx';
 import ContactSection from '../components/contact_section.jsx';
+import Footer from '../components/footer.jsx';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <EducationSection />
           <ContactSection />
         </main>
+        <Footer />
       </div>
     </>
   )
