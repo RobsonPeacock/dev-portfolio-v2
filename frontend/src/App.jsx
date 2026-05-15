@@ -6,6 +6,7 @@ import CloudInfrastructureSection from '../components/cloud_infrastructure_secti
 import GithubCalendar from '../components/github_calendar.jsx';
 import WorkExperienceSection from '../components/work_experience_section.jsx';
 import ProjectSection from '../components/project_section.jsx';
+import EducationSection from '../components/education_section.jsx';
 import ContactSection from '../components/contact_section.jsx';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <GithubCalendar />
           <WorkExperienceSection />
           <ProjectSection />
+          <EducationSection />
           <ContactSection />
         </main>
       </div>
