@@ -48,6 +48,6 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:description, :status, :title)
+    params.require(:project).permit(:description, :status, :title, tech_stack: [])
   end
 end
