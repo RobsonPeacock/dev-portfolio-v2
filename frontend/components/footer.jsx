@@ -8,6 +8,7 @@ function Footer() {
           <div>
             <p className="text-cyan-400 font-semibold">Robson Peacock</p>
             <p className="mt-3">Backend Engineer • Platform Builder • Cloud Enthusiast</p>
+            <p className="mt-3">London, UK</p>
           </div>
 
           <div className="flex items-center justify-center gap-5 text-cyan-400">

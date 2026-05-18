@@ -35,6 +35,9 @@ Node.js Python APIs Databases Cloud CI/CD Linux`}
             <p className="mt-6 text-gray-400 text-lg">
               I build APIs, architect scalable platforms, automate deployments, and optimize production systems.
             </p>
+            <div className="flex items-center gap-2 text-sm text-cyan-300 border border-cyan-500/20 bg-[#111827]/70 px-4 py-2 rounded-full backdrop-blur-sm my-3">
+              <span>📍 London, UK</span>
+            </div>
           </div>
         </section>
     </>
