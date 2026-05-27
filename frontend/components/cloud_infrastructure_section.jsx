@@ -27,7 +27,7 @@ function CloudInfrastructureSection() {
                 color: 'text-cyan-400',
                 border: 'border-cyan-400/20',
                 glow: 'shadow-[0_0_40px_rgba(34,211,238,0.08)]',
-                services: ['EC2', 'Lambda', 'ECS', 'EKS']
+                services: ['EC2', 'Lambda', 'ECS', 'API Gateway']
               },
               {
                 title: 'Cloud Foundations',
@@ -35,7 +35,7 @@ function CloudInfrastructureSection() {
                 color: 'text-green-400',
                 border: 'border-green-400/20',
                 glow: 'shadow-[0_0_40px_rgba(74,222,128,0.08)]',
-                services: ['S3', 'RDS', 'VPC', 'Route 53', 'CloudFront']
+                services: ['S3', 'RDS', 'VPC', 'Route 53', 'CloudFront', 'DynamoDB', 'CloudTrail', 'SES', 'Cognito', 'Security Hub', 'Secrets Manager']
               },
               {
                 title: 'Automation & CI/CD',
@@ -43,7 +43,7 @@ function CloudInfrastructureSection() {
                 color: 'text-purple-400',
                 border: 'border-purple-400/20',
                 glow: 'shadow-[0_0_40px_rgba(192,132,252,0.08)]',
-                services: ['Terraform', 'CloudWatch', 'CodePipeline', 'IAM', 'SNS/SQS']
+                services: ['CloudWatch', 'IAM', 'SNS/SQS', 'ECR', 'EventBridge']
               }
             ].map(layer => (
               <div

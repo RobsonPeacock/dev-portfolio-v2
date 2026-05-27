@@ -13,10 +13,10 @@ function HeroSection() {
 Robson Peacock
 
 $ role
-Backend Engineer | Platform Builder | Cloud Enthusiast
+Backend Engineer | Infrastructure as Code | Cloud Systems
 
 $ skills --list
-Node.js Python APIs Databases Cloud CI/CD Linux`}
+Ruby on Rails AWS Terraform GitHub Actions SQL NodeJS`}
             </pre>
           </div>
 

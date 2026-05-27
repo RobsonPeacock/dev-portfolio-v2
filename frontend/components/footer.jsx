@@ -7,7 +7,7 @@ function Footer() {
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col items-center justify-center gap-4 text-sm text-gray-400 text-center">
           <div>
             <p className="text-cyan-400 font-semibold">Robson Peacock</p>
-            <p className="mt-3">Backend Engineer • Platform Builder • Cloud Enthusiast</p>
+            <p className="mt-3">Backend Engineer | Infrastructure as Code | Cloud Systems</p>
             <p className="mt-3">London, UK</p>
           </div>
 

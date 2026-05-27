@@ -17,7 +17,7 @@ function EducationSection() {
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
-              type: 'Degree',
+              type: 'Certification',
               title: 'BSc Computer Science',
               institution: 'University Name',
               period: '2018 — 2021',
