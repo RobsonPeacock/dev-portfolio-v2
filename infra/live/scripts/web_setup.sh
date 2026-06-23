@@ -69,7 +69,7 @@ cat <<EOF > /home/ubuntu/docker-compose.yml
         - $${PRIVATE_IP}:80:3000
       working_dir: /app
       environment:
-        - ALLOWED_ORIGIN: $${ALLOWED_ORIGIN}
+        - ALLOWED_ORIGIN=$${ALLOWED_ORIGIN}
         - APP_USER=$${DEV_PORTFOLIO_DB_USERNAME}
         - APP_USER_PASSWORD=$${DEV_PORTFOLIO_DB_PASSWORD}
         - DATABASE_URL=postgresql://$${DEV_PORTFOLIO_DB_USERNAME}:$${DEV_PORTFOLIO_DB_PASSWORD}@$${DEV_PORTFOLIO_DB_HOST}:5432/$${DEV_PORTFOLIO_DB_NAME}
