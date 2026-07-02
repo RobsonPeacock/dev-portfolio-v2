@@ -1,8 +1,24 @@
 import { useState } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "../src/api";
+
+const fetchWorkExperience = async () => {
+  const response = await apiClient.get('/work_experiences');
+  return response.data;
+}
 
 function WorkExperienceSection() {
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['work_experiences'],
+    queryFn: fetchWorkExperience,
+  });
+
   const [openJob, setOpenJob] = useState(null);
   const [showAllJobs, setShowAllJobs] = useState(false);
+
+  if (isLoading) return <div>Loading records from the database...</div>;
+  if (isError) return <div>Error fetching data: {error.message}</div>;
 
   return (
     <>
@@ -12,38 +28,7 @@ function WorkExperienceSection() {
         <div className="relative max-w-7xl mx-auto">
           <div className="absolute left-1/2 top-0 h-full w-px bg-linear-to-b from-cyan-400 via-green-400 to-transparent transform -translate-x-1/2"></div>
 
-          {[
-            {
-              role: 'Senior Backend Engineer',
-              company: 'Tech Company',
-              period: '2023 - Present',
-              description: 'Building scalable APIs, improving system performance, and designing cloud-native backend services.'
-            },
-            {
-              role: 'Platform Engineer',
-              company: 'Cloud Startup',
-              period: '2021 - 2023',
-              description: 'Automated deployments, managed infrastructure, and improved CI/CD pipelines across production systems.'
-            },
-            {
-              role: 'Backend Developer',
-              company: 'Startup Studio',
-              period: '2019 - 2021',
-              description: 'Developed backend APIs, optimized SQL queries, and improved application scalability.'
-            },
-            {
-              role: 'Senior Backend Engineer',
-              company: 'Tech Company',
-              period: '2023 - Present',
-              description: 'Building scalable APIs, improving system performance, and designing cloud-native backend services.'
-            },
-            {
-              role: 'Platform Engineer',
-              company: 'Cloud Startup',
-              period: '2021 - 2023',
-              description: 'Automated deployments, managed infrastructure, and improved CI/CD pipelines across production systems.'
-            }
-          ].slice(0, showAllJobs ? undefined : 3).map((job, i) => (
+          {data.slice(0, showAllJobs ? undefined : 3).map((job, i) => (
             <div
               key={i}
               className={`relative mb-16 flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}
@@ -71,7 +56,11 @@ function WorkExperienceSection() {
                 {openJob === i && (
                   <div className="px-6 pb-6 border-t border-cyan-500/10 pt-4">
                     <p className="text-gray-400 text-sm leading-6">
-                      {job.description}
+                      {job.description.split(".").slice(0, -1).map((description) => (
+                        <ul>
+                          <li class="p-2">- { description }</li>
+                        </ul>
+                      ))}
                     </p>
                   </div>
                 )}
