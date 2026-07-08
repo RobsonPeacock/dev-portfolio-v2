@@ -1,4 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "../src/api";
+
+const fetchEducations = async () => {
+  const response = await apiClient.get('/educations');
+  return response.data;
+}
+
 function EducationSection() {
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['educations'],
+    queryFn: fetchEducations,
+  });
+
+  if (isLoading) return <div>Loading records from the database...</div>;
+  if (isError) return <div>Error fetching data: {error.message}</div>;
+
   return (
     <>
       <section className="max-w-6xl mx-auto px-6 py-20 overflow-hidden">
@@ -15,66 +32,20 @@ function EducationSection() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              type: 'Certification',
-              title: 'BSc Computer Science',
-              institution: 'University Name',
-              period: '2018 — 2021',
-              accent: 'cyan',
-              link: 'https://www.credly.com/',
-            },
-            {
-              type: 'Certification',
-              title: 'AWS Solutions Architect',
-              institution: 'Amazon Web Services',
-              period: '2023',
-              accent: 'green',
-              link: 'https://www.credly.com/',
-            },
-            {
-              type: 'Certification',
-              title: 'CKA Certification',
-              institution: 'Linux Foundation',
-              period: '2024',
-              accent: 'purple',
-              link: 'https://www.credly.com/',
-            },
-          ].map((item, i) => (
+          {data.map((item, i) => (
             <div
               key={i}
-              className={`group relative overflow-hidden rounded-3xl border backdrop-blur-md p-6 min-h-55 transition-all duration-300 hover:-translate-y-1
-              ${
-                item.accent === 'cyan'
-                  ? 'border-cyan-400/20 bg-cyan-500/3'
-                  : item.accent === 'green'
-                  ? 'border-green-400/20 bg-green-500/3'
-                  : 'border-purple-400/20 bg-purple-500/3'
-              }`}
+              className={`group relative overflow-hidden rounded-3xl border backdrop-blur-md p-6 min-h-55 transition-all duration-300 hover:-translate-y-1 border-cyan-400/20 bg-cyan-500/3`}
             >
               <div
-                className={`absolute top-0 right-0 w-32 h-32 blur-3xl opacity-10 transition-opacity duration-300 group-hover:opacity-20
-                ${
-                  item.accent === 'cyan'
-                    ? 'bg-cyan-400'
-                    : item.accent === 'green'
-                    ? 'bg-green-400'
-                    : 'bg-purple-400'
-                }`}
+                className={`absolute top-0 right-0 w-32 h-32 blur-3xl opacity-10 transition-opacity duration-300 group-hover:opacity-20 bg-green-400`}
               ></div>
 
               <div className="relative z-10 flex flex-col h-full justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-5">
                     <span
-                      className={`text-xs uppercase tracking-[0.25em]
-                      ${
-                        item.accent === 'cyan'
-                          ? 'text-cyan-400'
-                          : item.accent === 'green'
-                          ? 'text-green-400'
-                          : 'text-purple-400'
-                      }`}
+                      className={`text-xs uppercase tracking-[0.25em]`}
                     >
                       {item.type}
                     </span>
@@ -95,21 +66,14 @@ function EducationSection() {
 
                 <div className="mt-8 flex items-center gap-3">
                   <div
-                    className={`w-2.5 h-2.5 rounded-full
-                    ${
-                      item.accent === 'cyan'
-                        ? 'bg-cyan-400'
-                        : item.accent === 'green'
-                        ? 'bg-green-400'
-                        : 'bg-purple-400'
-                    }`}
+                    className={`w-2.5 h-2.5 rounded-full bg-cyan-400`}
                   ></div>
 
                   <div className="h-px flex-1 bg-white/10"></div>
 
-                    {item.link && (
+                    {item.certification_url && (
                       <a
-                        href={item.link}
+                        href={item.certification_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group inline-flex items-center gap-2 text-sm text-gray-400 hover:text-cyan-300 transition"
