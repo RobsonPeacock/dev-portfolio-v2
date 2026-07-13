@@ -1,4 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "../src/api";
+
+const fetchAbout = async () => {
+  const response = await apiClient.get('/about');
+  return response.data;
+}
+
 function HeroSection() {
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['about'],
+    queryFn: fetchAbout,
+  });
+
+  if (isLoading) return <div>Loading records from the database...</div>;
+  if (isError) return <div>Error fetching data: {error.message}</div>;
+
   return (
     <>
         <section className="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center">
@@ -23,7 +40,7 @@ Ruby on Rails AWS Terraform GitHub Actions SQL NodeJS`}
           <div className="flex flex-col items-center">
             <div className="mb-6 relative">
               <img
-                src="https://placeholdit.com/180x180"
+                src={data.profile_image_url}
                 alt="Profile placeholder"
                 className="w-44 h-44 rounded-2xl object-cover border-2 border-cyan-400 shadow-[0_0_30px_rgba(0,191,255,0.25)]"
               />
@@ -33,10 +50,10 @@ Ruby on Rails AWS Terraform GitHub Actions SQL NodeJS`}
               Building <span className="text-cyan-400">Scalable Backend Systems</span>
             </h2>
             <p className="mt-6 text-gray-400 text-lg">
-              I build APIs, architect scalable platforms, automate deployments, and optimize production systems.
+              {data.bio}
             </p>
             <div className="flex items-center gap-2 text-sm text-cyan-300 border border-cyan-500/20 bg-[#111827]/70 px-4 py-2 rounded-full backdrop-blur-sm my-3">
-              <span>📍 London, UK</span>
+              <span>{data.location}</span>
             </div>
           </div>
         </section>
