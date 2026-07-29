@@ -6,6 +6,14 @@ resource "aws_cloudfront_origin_access_control" "react_frontend_oac" {
   signing_protocol = "sigv4"
 }
 
+resource "aws_cloudfront_function" "strip_api_prefix_function" {
+  name    = "strip-api-prefix"
+  runtime = "cloudfront-js-2.0"
+  comment = "Function to strip /api prefix from requests"
+
+  code = file("${path.module}/functions/strip-api-prefix.js")
+}
+
 data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
 }
@@ -63,6 +71,11 @@ resource "aws_cloudfront_distribution" "react_frontend_distribution" {
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.strip_api_prefix_function.arn
+    }
   }
 
   price_class = "PriceClass_100"
