@@ -8,6 +8,9 @@ on:
 env:
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+  TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  TF_VAR_custom_email: ${{ secrets.CUSTOM_EMAIL }}
+  TF_VAR_destination_email: ${{ secrets.DESTINATION_EMAIL }}
 permissions:
   id-token: write
   contents: read
