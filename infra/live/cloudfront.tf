@@ -47,6 +47,8 @@ resource "aws_cloudfront_distribution" "react_frontend_distribution" {
   comment             = "CloudFront distribution for React frontend"
   default_root_object = "index.html"
 
+  aliases = [data.cloudflare_zone.dev_portfolio_zone.filter.name]
+
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
@@ -87,6 +89,19 @@ resource "aws_cloudfront_distribution" "react_frontend_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate.react_frontend_certificate.arn
+    ssl_support_method = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
+  }
+}
+
+resource "aws_acm_certificate" "react_frontend_certificate" {
+  provider          = aws.us_east_1
+  domain_name       = data.cloudflare_zone.dev_portfolio_zone.filter.name
+  subject_alternative_names = ["*.${data.cloudflare_zone.dev_portfolio_zone.filter.name}"]
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
