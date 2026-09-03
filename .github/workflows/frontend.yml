@@ -7,6 +7,7 @@ on:
     - 'frontend/**'
 env:
   VITE_API_URL: "${{ secrets.DOMAIN_NAME }}/api"
+  VITE_CUSTOM_EMAIL: "${{ secrets.CUSTOM_EMAIL }}"
   S3_BUCKET_PATH: "s3://${{ secrets.FRONTEND_BUCKET_NAME }}/"
   CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
 permissions:
