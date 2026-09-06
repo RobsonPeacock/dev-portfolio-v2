@@ -13,7 +13,46 @@ function HeroSection() {
     queryFn: fetchAbout,
   });
 
-  if (isLoading) return <div>Loading records from the database...</div>;
+  if (isLoading) return (
+    <>
+      <section className="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center">
+        <div className="bg-black rounded-2xl shadow-2xl border border-green-500/20 p-6 h-72.5 animate-pulse">
+          <div className="flex space-x-2 mb-6">
+            <div className="w-3 h-3 rounded-full bg-gray-800"></div>
+            <div className="w-3 h-3 rounded-full bg-gray-800"></div>
+            <div className="w-3 h-3 rounded-full bg-gray-800"></div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-4 w-20 bg-gray-800 rounded"></div>
+            <div className="h-4 w-36 bg-gray-800/60 rounded"></div>
+            <div className="h-4 w-16 bg-gray-800 rounded mt-6"></div>
+            <div className="h-4 w-80 bg-gray-800/60 rounded"></div>
+            <div className="h-4 w-28 bg-gray-800 rounded mt-6"></div>
+            <div className="h-4 w-96 bg-gray-800/60 rounded"></div>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center w-full">
+          <div className="mb-6 relative animate-pulse">
+            <div className="w-44 h-44 rounded-2xl bg-gray-800 border-2 border-gray-700"></div>
+          </div>
+
+          <div className="w-full flex flex-col items-center animate-pulse">
+            <div className="h-12 w-4/5 bg-gray-800 rounded-xl mb-3"></div>
+            <div className="h-12 w-3/5 bg-gray-800 rounded-xl"></div>
+          </div>
+
+          <div className="mt-6 w-full max-w-md space-y-3 animate-pulse">
+            <div className="h-4 w-full bg-gray-800 rounded"></div>
+            <div className="h-4 w-11/12 bg-gray-800 rounded mx-auto"></div>
+            <div className="h-4 w-4/5 bg-gray-800 rounded mx-auto"></div>
+          </div>
+
+          <div className="mt-6 h-9 w-32 bg-gray-800/70 border border-gray-700/50 rounded-full animate-pulse"></div>
+        </div>
+      </section>
+    </>
+  );
   if (isError) return <div>Error fetching data: {error.message}</div>;
 
   return (
