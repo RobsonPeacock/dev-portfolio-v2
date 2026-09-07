@@ -13,7 +13,38 @@ function ProjectSection() {
     queryFn: fetchProjects,
   });
 
-  if (isLoading) return <div>Loading records from the database...</div>;
+  if (isLoading) return (
+  <>
+    <section id="projects" className="max-w-7xl mx-auto px-6 py-16">
+      <div className="grid md:grid-cols-2 gap-6 items-stretch">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="relative overflow-hidden rounded-3xl border border-gray-800/50 bg-[#111827]/70 p-7 flex flex-col justify-between animate-pulse"
+          >
+            <div>
+              <div className="h-7 w-2/3 bg-gray-800 rounded-lg mb-5"></div>
+
+              <div className="flex flex-wrap gap-2">
+                <div className="h-8 w-20 rounded-2xl bg-gray-800/80"></div>
+                <div className="h-8 w-24 rounded-2xl bg-gray-800/80"></div>
+                <div className="h-8 w-16 rounded-2xl bg-gray-800/80"></div>
+                <div className="h-8 w-28 rounded-2xl bg-gray-800/80"></div>
+              </div>
+
+              <div className="mt-7 space-y-2.5">
+                <div className="h-4 w-full bg-gray-800/60 rounded"></div>
+                <div className="h-4 w-11/12 bg-gray-800/60 rounded"></div>
+                <div className="h-4 w-4/5 bg-gray-800/60 rounded"></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </>
+  );
+
   if (isError) return <div>Error fetching data: {error.message}</div>;
 
   return (
