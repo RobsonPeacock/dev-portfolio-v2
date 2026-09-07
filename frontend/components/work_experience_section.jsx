@@ -17,7 +17,34 @@ function WorkExperienceSection() {
   const [openJob, setOpenJob] = useState(null);
   const [showAllJobs, setShowAllJobs] = useState(false);
 
-  if (isLoading) return <div>Loading records from the database...</div>;
+  if (isLoading) return (
+  <>
+    <div className="relative max-w-7xl mx-auto">
+    <div className="absolute left-1/2 top-0 h-full w-px bg-gray-800 transform -translate-x-1/2"></div>
+
+    {[0, 1].map((i) => (
+      <div
+        key={i}
+        className={`relative mb-16 flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}
+      >
+        <div className="absolute left-1/2 top-6 w-5 h-5 rounded-full bg-gray-800 border-4 border-[#0B0F14] transform -translate-x-1/2 animate-pulse"></div>
+
+        <div className="w-full md:w-[45%] bg-[#111827]/90 rounded-2xl border border-gray-800/50 p-6 overflow-hidden animate-pulse">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2.5 w-full">
+              <div className="h-3.5 w-24 bg-gray-800 rounded"></div>
+              <div className="h-5 w-48 bg-gray-800 rounded"></div>
+              <div className="h-4 w-32 bg-gray-800/60 rounded"></div>
+            </div>
+            <div className="h-6 w-6 rounded bg-gray-800 shrink-0"></div>
+          </div>
+        </div>
+      </div>
+    ))}
+    </div>
+  </>
+  );
+
   if (isError) return <div>Error fetching data: {error.message}</div>;
 
   return (
