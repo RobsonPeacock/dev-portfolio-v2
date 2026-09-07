@@ -13,7 +13,37 @@ function EducationSection() {
     queryFn: fetchEducations,
   });
 
-  if (isLoading) return <div>Loading records from the database...</div>;
+  if (isLoading) return (
+  <>
+    <section className="max-w-6xl mx-auto px-6 py-20 overflow-hidden">
+      <div className="grid md:grid-cols-3 gap-6">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="relative overflow-hidden rounded-3xl border border-gray-800/50 bg-[#111827]/70 p-6 min-h-55 flex flex-col justify-between animate-pulse"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <div className="h-3 w-16 bg-gray-800 rounded"></div>
+                <div className="h-3 w-20 bg-gray-800/60 rounded"></div>
+              </div>
+
+              <div className="h-6 w-3/4 bg-gray-800 rounded-md mb-3"></div>
+              <div className="h-4 w-1/2 bg-gray-800/60 rounded"></div>
+            </div>
+
+            <div className="mt-8 flex items-center gap-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-gray-800 shrink-0"></div>
+              <div className="h-px flex-1 bg-gray-800/50"></div>
+              <div className="h-4 w-28 bg-gray-800/80 rounded shrink-0"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </>
+  );
+
   if (isError) return <div>Error fetching data: {error.message}</div>;
 
   return (
