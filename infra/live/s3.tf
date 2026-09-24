@@ -35,8 +35,8 @@ resource "aws_s3_bucket_public_access_block" "frontend_bucket_block" {
 
 data "aws_iam_policy_document" "frontend_bucket_policy" {
   statement {
-    sid       = "AllowCloudFrontServicePrincipalReadOnly"
-    effect    = "Allow"
+    sid    = "AllowCloudFrontServicePrincipalReadOnly"
+    effect = "Allow"
 
     principals {
       type        = "Service"
