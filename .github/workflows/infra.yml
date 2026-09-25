@@ -27,6 +27,8 @@ jobs:
           aws-region: us-east-1
 
       - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14.0
 
       - name: Terraform fmt (Bootstrap)
         run: terraform fmt -check
@@ -62,6 +64,8 @@ jobs:
           aws-region: us-east-1
 
       - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14.0
 
       - name: Terraform fmt (Live)
         run: terraform fmt -check
