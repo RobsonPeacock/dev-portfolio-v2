@@ -31,14 +31,11 @@ resource "aws_cloudfront_distribution" "react_frontend_distribution" {
   }
 
   origin {
-    domain_name = aws_instance.dev_portfolio_web_instance.public_dns
+    domain_name = aws_instance.dev_portfolio_web_instance.private_dns
     origin_id   = "web-instance-origin"
 
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
+    vpc_origin_config {
+      vpc_origin_id = aws_cloudfront_vpc_origin.web_instance_vpc_origin.id
     }
   }
 
@@ -103,5 +100,28 @@ resource "aws_acm_certificate" "react_frontend_certificate" {
 
   lifecycle {
     create_before_destroy = true
+  }
+}
+
+resource "aws_cloudfront_vpc_origin" "web_instance_vpc_origin" {
+  vpc_origin_endpoint_config {
+    name                   = "dev-portfolio-vpc-origin"
+    arn                    = aws_instance.dev_portfolio_web_instance.arn
+    http_port              = 80
+    https_port             = 443
+    origin_protocol_policy = "http-only"
+
+    origin_ssl_protocols {
+      items    = ["TLSv1.2"]
+      quantity = 1
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+
+    replace_triggered_by = [
+      aws_instance.dev_portfolio_web_instance.arn,
+    ]
   }
 }
