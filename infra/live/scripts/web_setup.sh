@@ -66,7 +66,7 @@ cat <<EOF > /home/ubuntu/docker-compose.yml
     web:
       image: ${ecr_base_url}/dev-portfolio-api:\$IMAGE_TAG
       ports:
-        - $${PRIVATE_IP}:80:3000
+        - 0.0.0.0:80:3000
       working_dir: /app
       environment:
         - ALLOWED_ORIGIN=$${ALLOWED_ORIGIN}
