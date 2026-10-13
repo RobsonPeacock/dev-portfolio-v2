@@ -52,3 +52,58 @@ resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
   bucket = aws_s3_bucket.react_frontend_bucket.id
   policy = data.aws_iam_policy_document.frontend_bucket_policy.json
 }
+
+resource "aws_s3_bucket" "db_backup_bucket" {
+  bucket = "robson-dev-portfolio-db-backup-bucket"
+
+  tags = {
+    Name        = "db-backup-bucket"
+    Environment = "production"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "db_backup_bucket_enc" {
+  bucket = aws_s3_bucket.db_backup_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "db_backup_bucket_versioning" {
+  bucket = aws_s3_bucket.db_backup_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "db_backup_bucket_block" {
+  bucket                  = aws_s3_bucket.db_backup_bucket.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+data "aws_iam_policy_document" "db_backup_bucket_policy" {
+  statement {
+    sid    = "AllowBackupServicePrincipalWrite"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.db_backup_bucket.arn}/*"]
+  }
+}
+
+resource "aws_s3_bucket_policy" "db_backup_bucket_policy" {
+  bucket = aws_s3_bucket.db_backup_bucket.id
+  policy = data.aws_iam_policy_document.db_backup_bucket_policy.json
+}
