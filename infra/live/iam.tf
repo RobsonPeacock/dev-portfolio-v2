@@ -68,3 +68,28 @@ resource "aws_iam_role_policy_attachment" "attach_ssm_policy" {
   role       = aws_iam_role.app_role.name
   policy_arn = aws_iam_policy.ssm_policy.arn
 }
+
+data "aws_iam_policy_document" "s3_backup_policy_document" {
+  statement {
+    actions = [
+      "s3:PutObject",
+      "ssm:GetParameter",
+    ]
+
+    resources = [
+      aws_s3_bucket.db_backup_bucket.arn,
+      "${aws_s3_bucket.db_backup_bucket.arn}/*"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "s3_backup_policy" {
+  name        = "s3-backup-policy"
+  description = "Provides access to S3 bucket for backups"
+  policy      = data.aws_iam_policy_document.s3_backup_policy_document.json
+}
+
+resource "aws_iam_role_policy_attachment" "attach_s3_backup_policy" {
+  role       = aws_iam_role.app_role.name
+  policy_arn = aws_iam_policy.s3_backup_policy.arn
+}
