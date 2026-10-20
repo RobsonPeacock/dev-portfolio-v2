@@ -77,3 +77,13 @@ resource "aws_ssm_parameter" "allowed_origin" {
     ignore_changes = [value]
   }
 }
+
+resource "aws_ssm_parameter" "db_backup_bucket_name" {
+  name  = "/prod/backend/dev_portfolio_db_backup_bucket_name"
+  type  = "String"
+  value = aws_s3_bucket.db_backup_bucket.bucket
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
