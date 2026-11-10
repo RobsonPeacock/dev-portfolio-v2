@@ -10,6 +10,7 @@ env:
   TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
   TF_VAR_custom_email: ${{ secrets.CUSTOM_EMAIL }}
   TF_VAR_destination_email: ${{ secrets.DESTINATION_EMAIL }}
+  SCRIPTS_BUCKET_NAME: ${{ secrets.SCRIPTS_BUCKET_NAME }}
 permissions:
   id-token: write
   contents: read
@@ -86,4 +87,25 @@ jobs:
 
       - name: Terraform Apply (Live)
         run: terraform apply -auto-approve -input=false
+        working-directory: ./infra/live
+
+      - name: Sync backup script to S3
+        run: |
+          aws s3 sync ./scripts s3://${{ secrets.SCRIPTS_BUCKET_NAME }}
+        working-directory: ./infra/live
+
+      - name: Setup backup script cron job
+        run: |
+          instance_state=$(aws ec2 describe-instances \
+                          --instance-ids $(terraform output -raw web_instance_id) \
+                          --query 'Reservations[*].Instances[*].State.Name' --output text)
+
+          if [ "$instance_state" = "running" ]; then
+            aws ssm send-command \
+              --targets "Key=instanceIds,Values=$(terraform output -raw web_instance_id)" \
+              --document-name "AWS-RunShellScript" \
+              --comment "Setup backup script cron job" \
+              --parameters '[aws s3 cp s3://'$SCRIPTS_BUCKET_NAME'/backup.sh /home/ec2-user/scripts/backup.sh]' \
+              --region us-east-1
+          fi
         working-directory: ./infra/live
