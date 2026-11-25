@@ -89,3 +89,9 @@ cd /home/ubuntu
 docker compose up -d db
 
 echo "DB Started"
+
+aws s3 cp \
+  "s3://$SCRIPTS_BUCKET_NAME/setup_backup_cron.sh" \
+  /home/ec2-user/scripts/setup_backup_cron.sh
+
+bash /home/ec2-user/scripts/setup_backup_cron.sh

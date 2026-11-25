@@ -10,6 +10,7 @@ env:
   TF_VAR_cloudflare_account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
   TF_VAR_custom_email: ${{ secrets.CUSTOM_EMAIL }}
   TF_VAR_destination_email: ${{ secrets.DESTINATION_EMAIL }}
+  SCRIPTS_BUCKET_NAME: ${{ secrets.SCRIPTS_BUCKET_NAME }}
 permissions:
   id-token: write
   contents: read
@@ -86,4 +87,40 @@ jobs:
 
       - name: Terraform Apply (Live)
         run: terraform apply -auto-approve -input=false
+        working-directory: ./infra/live
+
+      - name: Sync backup script to S3
+        run: |
+          aws s3 sync ./scripts s3://${{ secrets.SCRIPTS_BUCKET_NAME }} \
+            --exclude "*" \
+            --include "db_backup.sh" \
+            --include "setup_backup_cron.sh"
+        working-directory: ./infra/live
+
+      - name: Setup backup script cron job
+        run: |
+          instance_id=$(terraform output -raw db_instance_id)
+
+          aws ec2 wait instance-running --instance-ids "$instance_id"
+
+          COMMAND_ID=$(aws ssm send-command \
+            --targets "Key=instanceIds,Values=$instance_id" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Setup backup script cron job" \
+            --parameters "commands=[\"
+                                    install -d -m 700 -o root -g root /opt/portfolio/scripts &&
+                                    sudo aws s3 sync s3://$SCRIPTS_BUCKET_NAME/setup_backup_cron.sh /opt/portfolio/scripts/setup_backup_cron.sh && 
+                                    chmod 700 /opt/portfolio/scripts/setup_backup_cron.sh
+                                    \"]")
+
+          echo "Sent command $COMMAND_ID to instances tagged Name=dev-portfolio-db-instance"
+
+          echo "Waiting for deployment to complete..."
+          sleep 10
+
+          aws ssm wait command-executed \
+          --command-id "$COMMAND_ID" \
+          --instance-id "$instance_id"
+
+          echo "Deployment completed successfully."
         working-directory: ./infra/live
